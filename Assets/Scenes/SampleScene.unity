@@ -2656,6 +2656,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 443978833972699399, guid: 4cbba903f703d9441b556037ace5d12c,
+        type: 3}
+      propertyPath: swipeSpeed
+      value: 7.9
+      objectReference: {fileID: 0}
     - target: {fileID: 443978833972699400, guid: 4cbba903f703d9441b556037ace5d12c,
         type: 3}
       propertyPath: m_RootOrder
