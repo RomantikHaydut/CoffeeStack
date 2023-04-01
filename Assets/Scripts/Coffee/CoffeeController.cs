@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class CoffeeController : MonoBehaviour
 {
-    [SerializeField] private CoffeeSO coffeeSO;
     [SerializeField] private float xFactor = 1f;
     [SerializeField] private float yFactor = 1f;
     [SerializeField] private float zFactor = 1f;
@@ -34,12 +33,6 @@ public class CoffeeController : MonoBehaviour
     private void Update()
     {
         FollowPlayer();
-
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            Instantiate(coffeeSO.cupList[0],cup.transform.position,Quaternion.identity);
-            Destroy(cup);
-        }
     }
 
     private void FollowPlayer()
