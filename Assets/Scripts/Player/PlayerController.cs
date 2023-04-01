@@ -10,8 +10,11 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private float swipeSpeed = 1f;
 
+    public int fps = 60;
+
     private void Update()
     {
+        Application.targetFrameRate = fps;
         MovementForward();
         if (Input.touchCount > 0)
         {

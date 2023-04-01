@@ -43,7 +43,7 @@ public class CoffeeController : MonoBehaviour
             {
                 int coffeeCount = coffeeHolder.CoffeeCount();
                 float lerpedPositionX = Mathf.Lerp(transform.position.x, target.position.x, (coffeeCount * speed) / (lerpFactor * index) * Time.deltaTime);
-                transform.position = new Vector3(lerpedPositionX, transform.position.y, target.position.z + followDistanceZ);
+                transform.position = new Vector3(lerpedPositionX, transform.position.y, coffeeHolder.transform.position.z + followDistanceZ * index);
             }
         }
     }

@@ -80,7 +80,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c28dcd586b83c8341b4dd5f4939858fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coffeeSO: {fileID: 11400000, guid: e72eea2f629f88940a35cfd8eaad4a57, type: 2}
   xFactor: 0.3
   yFactor: 6
   zFactor: 10
