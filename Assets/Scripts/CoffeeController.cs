@@ -28,6 +28,7 @@ public class CoffeeController : MonoBehaviour
         rigidbody = GetComponent<Rigidbody>();
     }
 
+
     private void Update()
     {
         FollowPlayer();

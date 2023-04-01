@@ -66,7 +66,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 122
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!114 &3433276768221844583
 MonoBehaviour:
@@ -80,11 +80,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c28dcd586b83c8341b4dd5f4939858fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  xFactor: 0.3
+  yFactor: 6
+  zFactor: 10
   target: {fileID: 0}
   coffee: {fileID: 7356758693591456083}
   lid: {fileID: 8483845218802656655}
   sleeve: {fileID: 4553340418461092833}
-  speed: 4
+  speed: 3
 --- !u!95 &1086522795812123313
 Animator:
   serializedVersion: 4
