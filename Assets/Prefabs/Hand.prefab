@@ -319,8 +319,8 @@ Transform:
   m_GameObject: {fileID: 2844350931568099140}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.33, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.09, y: 0.09, z: 0.09}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 7858019489516115428}
   - {fileID: 3572336315077761990}
@@ -340,12 +340,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 307dba3145e265e418510d3f3f23e4a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speedForward: 5
-  bound: 3
-  swipeSpeed: 7.9
-  fps: 60
+  speedForward: 0.45
+  bound: 0.45
+  swipeSpeed: 0.72
   coffeeList: []
-  coffeeHolderTransform: {fileID: 0}
+  coffeeHolderTransform: {fileID: 62573924}
 --- !u!65 &664319058724841158
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -10,13 +10,13 @@ public class CoffeeController : MonoBehaviour
     [SerializeField] private float zFactor = 10f;
     [Header("Transforms")]
     [SerializeField] private Transform target;
-    [SerializeField] private Transform cup;
-    [SerializeField] private Transform coffee;
-    [SerializeField] private Transform lid;
-    [SerializeField] private Transform sleeve;
+    [SerializeField] private GameObject cup;
+    [SerializeField] private GameObject coffee;
+    [SerializeField] private GameObject lid;
+    [SerializeField] private GameObject sleeve;
     private PlayerController playerController;
     private int index;
-    private float speed = 4f;
+    [SerializeField] private float speed = 8f;
     private float lerpFactor = 0.1f;
     private float followDistanceZ = 1.0f;
     private bool isFollowing = false;
@@ -67,7 +67,7 @@ public class CoffeeController : MonoBehaviour
             {
                 Vector3 targetPosition = new Vector3(target.position.x, transform.position.y, target.position.z + index);
                 float targetPositionX;
-                if (Mathf.Abs(target.position.x - transform.position.x) >= 0.005f)
+                if (Mathf.Abs(target.position.x - transform.position.x) >= 0.0001f)
                 {
                     targetPositionX = (target.position.x - transform.position.x) * Time.deltaTime * (playerController.CoffeeCount() / index) * speed;
                 }
@@ -76,7 +76,7 @@ public class CoffeeController : MonoBehaviour
                     targetPositionX = 0;
                 }
 
-                float targetPositionZ = target.position.z + 1;
+                float targetPositionZ = target.position.z + 0.15f;
                 transform.position += new Vector3(targetPositionX, 0, 0);
                 transform.position = new Vector3(transform.position.x, transform.position.y, targetPositionZ);
             }
@@ -95,15 +95,15 @@ public class CoffeeController : MonoBehaviour
 
     public void CoffeeFilling()
     {
-        coffee.gameObject.SetActive(true);
+        coffee.SetActive(true);
     }
     public void CoffeeLidding()
     {
-        lid.gameObject.SetActive(true);
+        lid.SetActive(true);
     }
     public void CoffeeSleeving()
     {
-        sleeve.gameObject.SetActive(true);
+        sleeve.SetActive(true);
     }
 
     public void Popup()
