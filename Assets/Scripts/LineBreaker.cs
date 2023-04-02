@@ -8,7 +8,7 @@ public class LineBreaker : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Coffee"))
         {
-            FindObjectOfType<CoffeeHolder>().LineBreak(other.gameObject);
+            FindObjectOfType<PlayerController>().LineBreak(other.gameObject);
             gameObject.SetActive(false);
         }
     }

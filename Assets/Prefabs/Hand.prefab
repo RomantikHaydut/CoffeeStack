@@ -302,7 +302,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3184883549150553598}
   - component: {fileID: 664319058724841160}
-  - component: {fileID: 664319058724841159}
   - component: {fileID: 664319058724841158}
   m_Layer: 0
   m_Name: Hand
@@ -344,20 +343,9 @@ MonoBehaviour:
   speedForward: 5
   bound: 3
   swipeSpeed: 7.9
---- !u!114 &664319058724841159
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2844350931568099140}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 983da09d800efb64195748862eed3fc9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  fps: 60
   coffeeList: []
-  coffeeHolderTransform: {fileID: 62573924}
+  coffeeHolderTransform: {fileID: 0}
 --- !u!65 &664319058724841158
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -4,35 +4,32 @@ using UnityEngine;
 
 public class CoffeeController : MonoBehaviour
 {
-    [SerializeField] private float xFactor = 1f;
-    [SerializeField] private float yFactor = 1f;
-    [SerializeField] private float zFactor = 1f;
+    [Header("Jump Forces")]
+    [SerializeField] private float xFactor = 0.3f;
+    [SerializeField] private float yFactor = 6f;
+    [SerializeField] private float zFactor = 10f;
+    [Header("Transforms")]
     [SerializeField] private Transform target;
     [SerializeField] private Transform cup;
     [SerializeField] private Transform coffee;
     [SerializeField] private Transform lid;
     [SerializeField] private Transform sleeve;
-    private CoffeeHolder coffeeHolder;
-    [SerializeField] private float speed = 4f;
+    private PlayerController playerController;
+    private int index;
+    private float speed = 4f;
     private float lerpFactor = 0.1f;
     private float followDistanceZ = 1.0f;
     private bool isFollowing = false;
-    private int index;
+    private bool isGrounded = true;
     private Animator animator;
     private Rigidbody rigidbody;
-    private bool isGrounded = true;
+
 
     private void Awake()
     {
-        coffeeHolder = FindObjectOfType<CoffeeHolder>();
+        playerController = FindObjectOfType<PlayerController>();
         animator = GetComponent<Animator>();
         rigidbody = GetComponent<Rigidbody>();
-    }
-
-
-    private void Update()
-    {
-        FollowPlayer();
     }
 
     private void FollowPlayer()
@@ -41,16 +38,54 @@ public class CoffeeController : MonoBehaviour
         {
             if (target != null)
             {
-                int coffeeCount = coffeeHolder.CoffeeCount();
+                int coffeeCount = playerController.CoffeeCount();
                 float lerpedPositionX = Mathf.Lerp(transform.position.x, target.position.x, (coffeeCount * speed) / (lerpFactor * index) * Time.deltaTime);
-                transform.position = new Vector3(lerpedPositionX, transform.position.y, coffeeHolder.transform.position.z + followDistanceZ * index);
+                transform.position = new Vector3(lerpedPositionX, transform.position.y, playerController.transform.position.z + followDistanceZ * index);
             }
         }
     }
 
-    public void SetFollower(Transform follower)
+    public void FollowPlayer2()
     {
-        target = follower;
+        if (isFollowing)
+        {
+            if (target != null)
+            {
+                Vector3 targetPosition = new Vector3(target.position.x, transform.position.y, target.position.z + index);
+                float xPos = Mathf.MoveTowards(transform.position.x, playerController.transform.position.x, speed * Time.deltaTime * playerController.CoffeeCount() / index * 2);
+                //transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
+                transform.position = new Vector3(xPos, transform.position.y, playerController.transform.position.z + index);
+            }
+        }
+    }
+
+    public void FollowPlayer3()
+    {
+        if (isFollowing)
+        {
+            if (target != null)
+            {
+                Vector3 targetPosition = new Vector3(target.position.x, transform.position.y, target.position.z + index);
+                float targetPositionX;
+                if (Mathf.Abs(target.position.x - transform.position.x) >= 0.005f)
+                {
+                    targetPositionX = (target.position.x - transform.position.x) * Time.deltaTime * (playerController.CoffeeCount() / index) * speed;
+                }
+                else
+                {
+                    targetPositionX = 0;
+                }
+
+                float targetPositionZ = target.position.z + 1;
+                transform.position += new Vector3(targetPositionX, 0, 0);
+                transform.position = new Vector3(transform.position.x, transform.position.y, targetPositionZ);
+            }
+        }
+    }
+
+    public void SetFollower(Transform target)
+    {
+        this.target = target;
     }
 
     public void SetIndex(int index)
@@ -102,7 +137,7 @@ public class CoffeeController : MonoBehaviour
         {
             if (!isFollowing)
             {
-                coffeeHolder.AddCoffeeToList(gameObject, this);
+                playerController.AddCoffeeToList(gameObject, this);
                 isFollowing = true;
             }
         }
@@ -118,7 +153,7 @@ public class CoffeeController : MonoBehaviour
                 {
                     if (collision.gameObject.GetComponent<CoffeeController>().IsFollowing())
                     {
-                        coffeeHolder.AddCoffeeToList(gameObject, this);
+                        playerController.AddCoffeeToList(gameObject, this);
                         isFollowing = true;
                     }
                 }
