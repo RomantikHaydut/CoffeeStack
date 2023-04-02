@@ -14,12 +14,7 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private Transform coffeeHolderTransform;
 
-    private void Start()
-    {
-        Application.targetFrameRate = 60;
-    }
-
-    private void FixedUpdate()
+    private void Update()
     {
         MovementForward();
 
