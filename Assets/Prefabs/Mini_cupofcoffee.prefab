@@ -300,14 +300,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c28dcd586b83c8341b4dd5f4939858fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  xFactor: 0.243
-  yFactor: 3.24
-  zFactor: 5.4
+  xFactor: 0.35
+  yFactor: 1.75
+  zFactor: 3.5
   target: {fileID: 0}
   cup: {fileID: 8925803153015850944}
   coffee: {fileID: 722008653384564264}
   lid: {fileID: 1160077033873058791}
   sleeve: {fileID: 24024233325643147}
+  speed: 8
 --- !u!54 &3115247412040826623
 Rigidbody:
   m_ObjectHideFlags: 0

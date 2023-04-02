@@ -32,7 +32,7 @@ public class PlayerController : MonoBehaviour
     {
         for (int i = 0; i < coffeeList.Count; i++)
         {
-            coffeeList[i].GetComponent<CoffeeController>().FollowPlayer3();
+            coffeeList[i].GetComponent<CoffeeController>().FollowPlayer();
         }
     }
 

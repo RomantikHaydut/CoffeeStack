@@ -18,7 +18,7 @@ public class CoffeeController : MonoBehaviour
     private int index;
     [SerializeField] private float speed = 8f;
     private float lerpFactor = 0.1f;
-    private float followDistanceZ = 1.0f;
+    private float followDistanceZ = 0.15f;
     private bool isFollowing = false;
     private bool isGrounded = true;
     private Animator animator;
@@ -32,14 +32,14 @@ public class CoffeeController : MonoBehaviour
         rigidbody = GetComponent<Rigidbody>();
     }
 
-    private void FollowPlayer()
+    public void FollowPlayer()
     {
         if (isFollowing)
         {
             if (target != null)
             {
                 int coffeeCount = playerController.CoffeeCount();
-                float lerpedPositionX = Mathf.Lerp(transform.position.x, target.position.x, (coffeeCount * speed) / (lerpFactor * index) * Time.deltaTime);
+                float lerpedPositionX = Mathf.Lerp(transform.position.x, target.position.x, (1f / index));
                 transform.position = new Vector3(lerpedPositionX, transform.position.y, playerController.transform.position.z + followDistanceZ * index);
             }
         }
@@ -52,9 +52,9 @@ public class CoffeeController : MonoBehaviour
             if (target != null)
             {
                 Vector3 targetPosition = new Vector3(target.position.x, transform.position.y, target.position.z + index);
-                float xPos = Mathf.MoveTowards(transform.position.x, playerController.transform.position.x, speed * Time.deltaTime * playerController.CoffeeCount() / index * 2);
+                float xPos = Mathf.MoveTowards(transform.position.x, playerController.transform.position.x, speed * Time.deltaTime * 0.1f * playerController.CoffeeCount() / index);
                 //transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
-                transform.position = new Vector3(xPos, transform.position.y, playerController.transform.position.z + index);
+                transform.position = new Vector3(xPos, transform.position.y, playerController.transform.position.z + index * followDistanceZ);
             }
         }
     }
@@ -65,18 +65,17 @@ public class CoffeeController : MonoBehaviour
         {
             if (target != null)
             {
-                Vector3 targetPosition = new Vector3(target.position.x, transform.position.y, target.position.z + index);
                 float targetPositionX;
-                if (Mathf.Abs(target.position.x - transform.position.x) >= 0.0001f)
+                if (Mathf.Abs(target.position.x - transform.position.x) >= 0.01f)
                 {
-                    targetPositionX = (target.position.x - transform.position.x) * Time.deltaTime * (playerController.CoffeeCount() / index) * speed;
+                    targetPositionX = (target.position.x - transform.position.x) * Time.deltaTime * speed * (playerController.CoffeeCount() / (index));
                 }
                 else
                 {
                     targetPositionX = 0;
                 }
 
-                float targetPositionZ = target.position.z + 0.15f;
+                float targetPositionZ = target.position.z + followDistanceZ;
                 transform.position += new Vector3(targetPositionX, 0, 0);
                 transform.position = new Vector3(transform.position.x, transform.position.y, targetPositionZ);
             }
