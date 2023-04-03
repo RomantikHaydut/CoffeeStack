@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
 
 public class CoffeeController : MonoBehaviour
@@ -10,10 +11,10 @@ public class CoffeeController : MonoBehaviour
     [SerializeField] private float zFactor = 10f;
     [Header("Transforms")]
     [SerializeField] private Transform target;
-    [SerializeField] private GameObject cup;
-    [SerializeField] private GameObject coffee;
-    [SerializeField] private GameObject lid;
-    [SerializeField] private GameObject sleeve;
+    [SerializeField] private List<GameObject> cupList;
+    private int activeCupIndex = 0;
+    private bool hasLid = false;
+    private bool hasSleeve = false;
     private PlayerController playerController;
     private int index;
     [SerializeField] private float speed = 8f;
@@ -94,15 +95,39 @@ public class CoffeeController : MonoBehaviour
 
     public void CoffeeFilling()
     {
-        coffee.SetActive(true);
+        cupList[activeCupIndex].GetComponent<CoffeeState>().CoffeeFilling();
     }
+
     public void CoffeeLidding()
     {
-        lid.SetActive(true);
+        cupList[activeCupIndex].GetComponent<CoffeeState>().CoffeeLidding();
+        hasLid = true;
     }
+
     public void CoffeeSleeving()
     {
-        sleeve.SetActive(true);
+        cupList[activeCupIndex].GetComponent<CoffeeState>().CoffeeSleeving();
+        hasSleeve = true;
+    }
+
+    public void Upgrade()
+    {
+        if (activeCupIndex + 1 < cupList.Count)
+        {
+            cupList[activeCupIndex].SetActive(false);
+            activeCupIndex++;
+            cupList[activeCupIndex].SetActive(true);
+
+            if (hasLid)
+            {
+                CoffeeLidding();
+            }
+
+            if (hasSleeve)
+            {
+                CoffeeSleeving();
+            }
+        }
     }
 
     public void Popup()
