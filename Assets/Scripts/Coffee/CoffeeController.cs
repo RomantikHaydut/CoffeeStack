@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Security.Cryptography;
 using UnityEngine;
 
 public class CoffeeController : MonoBehaviour
@@ -41,7 +40,15 @@ public class CoffeeController : MonoBehaviour
             {
                 int coffeeCount = playerController.CoffeeCount();
                 float lerpedPositionX = Mathf.Lerp(transform.position.x, target.position.x, (1f / index));
-                transform.position = new Vector3(lerpedPositionX, transform.position.y, playerController.transform.position.z + followDistanceZ * index);
+                if (index != 1)
+                {
+                    transform.position = new Vector3(lerpedPositionX, transform.position.y, playerController.transform.position.z + followDistanceZ * index);
+                }
+                else
+                {
+                    transform.position = new Vector3(lerpedPositionX, transform.position.y, target.transform.position.z);
+                }
+
             }
         }
     }
@@ -127,6 +134,8 @@ public class CoffeeController : MonoBehaviour
             {
                 CoffeeSleeving();
             }
+
+            Popup();
         }
     }
 
@@ -153,6 +162,13 @@ public class CoffeeController : MonoBehaviour
     public bool IsFollowing()
     {
         return isFollowing;
+    }
+
+    public void Sell()
+    {
+        int scoreFactor = (activeCupIndex + 1) * (hasLid ? 2 : 1) * (hasSleeve ? 2 : 1);
+        ScoreManager.Instance.AddScore(scoreFactor);
+        gameObject.SetActive(false);
     }
 
     private void OnTriggerEnter(Collider other)
