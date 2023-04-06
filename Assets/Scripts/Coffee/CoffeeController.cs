@@ -23,6 +23,10 @@ public class CoffeeController : MonoBehaviour
     private bool isGrounded = true;
     private Animator animator;
     private Rigidbody rigidbody;
+    private int score = 5;
+    private int lid_money = 10;
+    private int sleve_money = 15;
+    private int upgrade_money = 20;
 
 
     private void Awake()
@@ -42,7 +46,7 @@ public class CoffeeController : MonoBehaviour
                 float lerpedPositionX = Mathf.Lerp(transform.position.x, target.position.x, (1f / index));
                 if (index != 1)
                 {
-                    transform.position = new Vector3(lerpedPositionX, transform.position.y, playerController.transform.position.z + followDistanceZ * index);
+                    transform.position = new Vector3(lerpedPositionX, transform.position.y, target.transform.position.z + followDistanceZ);
                 }
                 else
                 {
@@ -89,6 +93,10 @@ public class CoffeeController : MonoBehaviour
             }
         }
     }
+    public int getScore()
+    {
+        return score;
+    }
 
     public void SetFollower(Transform target)
     {
@@ -107,13 +115,22 @@ public class CoffeeController : MonoBehaviour
 
     public void CoffeeLidding()
     {
+
         cupList[activeCupIndex].GetComponent<CoffeeState>().CoffeeLidding();
+        if (!hasLid)
+        {
+            score += lid_money;
+        }
         hasLid = true;
     }
 
     public void CoffeeSleeving()
     {
         cupList[activeCupIndex].GetComponent<CoffeeState>().CoffeeSleeving();
+        if (!hasSleeve)
+        {
+            score += sleve_money;
+        }
         hasSleeve = true;
     }
 
@@ -134,7 +151,7 @@ public class CoffeeController : MonoBehaviour
             {
                 CoffeeSleeving();
             }
-
+            score += upgrade_money;
             Popup();
         }
     }
