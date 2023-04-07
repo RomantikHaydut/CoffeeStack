@@ -188,6 +188,33 @@ public class CoffeeController : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    public void Stole(Transform newTarget)
+    {
+        playerController.RemoveCoffeeFromList(gameObject, this);
+        StartCoroutine(CloseObject(2f));
+        StartCoroutine(Stole_Coroutine(newTarget));   
+    }
+
+    private IEnumerator Stole_Coroutine(Transform newTarget)
+    {
+        rigidbody.isKinematic = true;
+        transform.position = new Vector3(transform.position.x, transform.position.y, newTarget.position.z);
+        Vector3 dir = (newTarget.position - transform.position).normalized;
+        float moveSpeed = 1f;
+        this.enabled = false;
+        while (true)
+        {
+            yield return null;
+            transform.position += dir * Time.deltaTime * moveSpeed;
+        }
+    }
+
+    private IEnumerator CloseObject(float time)
+    {
+        yield return new WaitForSecondsRealtime(time);
+        gameObject.SetActive(false);
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))

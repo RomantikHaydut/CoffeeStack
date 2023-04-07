@@ -53,6 +53,35 @@ public class PlayerController : MonoBehaviour
         StartCoroutine(PopupAllCoffees());
     }
 
+    public void RemoveCoffeeFromList(GameObject coffee, in CoffeeController coffeeController)
+    {
+        if (coffeeList.Contains(coffee))                     // eger kahve listemizde varsa.
+        {
+            StartCoroutine(PopupAllCoffees());               // tum kahvelerin animasyonlarini aciyoruz.
+            int index = coffeeList.IndexOf(coffee);          // indexini aliyoruz.
+            if (index == coffeeList.Count - 1)               // eger indeximiz son bardak ise 
+            {
+                coffeeList.Remove(coffee);                   // onu listeden cikarip metodu bitiriyoruz.
+                return;
+            }
+
+            coffeeList.Remove(coffee);                      // son index degil ise yine listeden cikariyoruz.
+
+            for (int i = index; i < coffeeList.Count; i++)  // Sonrasinda bu indexten baslayip sonraki indexteki bardaklara ulasiyoruz ve bardaklarin targetlerini kendilerinden bir önceki bardak yapiyoruz.
+            {
+                if (index != 0)                             
+                {
+                    coffeeController.SetFollower(coffeeList[index - 1].transform);
+                }
+                else
+                {
+                    coffeeController.SetFollower(coffeeHolderTransform);
+                }
+            }
+        }
+
+    }
+
     private IEnumerator PopupAllCoffees()
     {
         for (int i = coffeeList.Count - 1; i >= 0; i--)

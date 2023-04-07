@@ -272,7 +272,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 307dba3145e265e418510d3f3f23e4a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speedForward: 0.45
+  speedForward: 0.5
   bound: 0.45
   swipeSpeed: 1.1
   coffeeList: []
