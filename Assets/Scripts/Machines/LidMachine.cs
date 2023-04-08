@@ -7,8 +7,6 @@ public class LidMachine : MonoBehaviour
 {
     [SerializeField] private TMP_Text scoreText;
     private Animator anim;
-    public int sayac = 0;
-
     private void Awake()
     {
         anim = GetComponent<Animator>();
@@ -24,13 +22,11 @@ public class LidMachine : MonoBehaviour
     }
     private void OnTriggerExit(Collider other)
     {
-        //anim.SetTrigger("closePop");
-       
+        closeTrigger();
     }
 
     void closeTrigger()
     {
         anim.SetBool("popUp", false);
-        sayac++;
     }
 }
