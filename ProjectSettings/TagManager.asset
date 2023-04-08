@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Coffee
   - Ground
+  - Money
   layers:
   - Default
   - TransparentFX

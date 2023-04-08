@@ -18,7 +18,7 @@ public class UpgradeMachine : MonoBehaviour
         if (other.gameObject.TryGetComponent(out CoffeeController coffeeController))
         {
             coffeeController.Upgrade();
-            scoreText.text = coffeeController.getScore().ToString() + " $";
+            scoreText.text = coffeeController.GetScore().ToString() + " $";
             // anim.SetBool("popUp", true);
             canvas.SetActive(true);
             tripleCoffee.SetActive(false);

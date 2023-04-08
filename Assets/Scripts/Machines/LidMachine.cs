@@ -16,7 +16,7 @@ public class LidMachine : MonoBehaviour
         if (other.gameObject.TryGetComponent(out CoffeeController coffeeController))
         {
             coffeeController.CoffeeLidding();
-            scoreText.text = coffeeController.getScore().ToString() + " $";
+            scoreText.text = coffeeController.GetScore().ToString() + " $";
             anim.SetBool("popUp", true);
         }
     }

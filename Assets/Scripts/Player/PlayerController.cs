@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float speedForward = 5f;
+
+    [SerializeField] private float speedUpward = 3;
 
     [SerializeField] private float bound = 3;
 
@@ -14,6 +17,12 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private Transform coffeeHolderTransform;
 
+    private bool isLevelFinished = false;
+
+    private bool isGameFinished=false;
+
+    private int money;
+
     private void Start()
     {
         Application.targetFrameRate = 60;
@@ -21,11 +30,21 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        MovementForward();
+        if (!isGameFinished)
+        {
+            if (!isLevelFinished)
+            {
+                MovementForward();
 
-        MovementHorizontal();
+                MovementHorizontal();
 
-        MovementCoffees();
+                MovementCoffees();
+            }
+            else if (isLevelFinished)
+            {
+                transform.position += Vector3.up * speedUpward * Time.deltaTime;
+            }
+        }
     }
 
     private void MovementCoffees()
@@ -108,6 +127,30 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void FinishGame()
+    {
+        isLevelFinished = true;
+        money = ScoreManager.Instance.GetScore() / 5;
+        StartCoroutine(FinishRotate_Coroutine());
+    }
+
+    private IEnumerator FinishRotate_Coroutine()
+    {
+        float rotationZ = 0;
+        while (true)
+        {
+            if (rotationZ >= 90)
+            {
+                transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, 90f);
+                yield break;
+            }
+            yield return null;
+            transform.Rotate(Vector3.forward * 360 * Time.deltaTime);
+            //transform.Rotate(Vector3.up * 36 * Time.deltaTime);
+            rotationZ += Time.deltaTime * 360;
+        }
+    }
+
 
     private void MovementForward() // ileri hareket.
     {
@@ -135,5 +178,18 @@ public class PlayerController : MonoBehaviour
             }
         }
 
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("Money"))
+        {
+            other.gameObject.transform.GetChild(0).gameObject.SetActive(true); 
+            money -= 5;
+            //if (money <= 0)
+            //{
+            //    isGameFinished = true;
+            //}
+        }
     }
 }

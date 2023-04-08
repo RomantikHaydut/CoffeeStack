@@ -60,7 +60,7 @@ public class CoffeeController : MonoBehaviour
             }
         }
     }
-    public int getScore()
+    public int GetScore()
     {
         return score;
     }
@@ -173,8 +173,7 @@ public class CoffeeController : MonoBehaviour
 
     public void Sell()
     {
-        int scoreFactor = (activeCupIndex + 1) * (hasLid ? 2 : 1) * (hasSleeve ? 2 : 1);
-        ScoreManager.Instance.AddScore(scoreFactor);
+        ScoreManager.Instance.AddScore(score);
         gameObject.SetActive(false);
     }
 
