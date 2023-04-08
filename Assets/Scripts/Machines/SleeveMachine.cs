@@ -9,6 +9,7 @@ public class SleeveMachine : MonoBehaviour
         if (other.gameObject.TryGetComponent(out CoffeeController coffeeController))
         {
             coffeeController.CoffeeSleeving();
+            coffeeController.Down();
         }
     }
 }

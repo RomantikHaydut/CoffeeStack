@@ -14,6 +14,7 @@ public class CoffeeController : MonoBehaviour
     private int activeCupIndex = 0;
     private bool hasLid = false;
     private bool hasSleeve = false;
+    private bool hasCoffee = false;
     private PlayerController playerController;
     private int index;
     [SerializeField] private float speed = 8f;
@@ -23,7 +24,8 @@ public class CoffeeController : MonoBehaviour
     private bool isGrounded = true;
     private Animator animator;
     private Rigidbody rigidbody;
-    private int score = 5;
+    private int score = 0;
+    private int coffee_money = 5;
     private int lid_money = 10;
     private int sleve_money = 15;
     private int upgrade_money = 20;
@@ -35,6 +37,7 @@ public class CoffeeController : MonoBehaviour
         animator = GetComponent<Animator>();
         rigidbody = GetComponent<Rigidbody>();
     }
+
 
     public void FollowPlayer()
     {
@@ -111,6 +114,11 @@ public class CoffeeController : MonoBehaviour
     public void CoffeeFilling()
     {
         cupList[activeCupIndex].GetComponent<CoffeeState>().CoffeeFilling();
+        if (!hasCoffee)
+        {
+            score += coffee_money;
+        }
+        hasCoffee = true;
     }
 
     public void CoffeeLidding()
@@ -155,7 +163,10 @@ public class CoffeeController : MonoBehaviour
             Popup();
         }
     }
-
+    public void Down()
+    {
+        animator.SetTrigger("Down");
+    }
     public void Popup()
     {
         animator.SetTrigger("Popup");
@@ -166,6 +177,10 @@ public class CoffeeController : MonoBehaviour
         animator.ResetTrigger("Popup");
     }
 
+    private void CloseDown()
+    {
+        animator.ResetTrigger("Down");
+    }
     public void Jump()
     {
         isGrounded = false;
@@ -183,6 +198,7 @@ public class CoffeeController : MonoBehaviour
 
     public void Sell()
     {
+
         int scoreFactor = (activeCupIndex + 1) * (hasLid ? 2 : 1) * (hasSleeve ? 2 : 1);
         ScoreManager.Instance.AddScore(scoreFactor);
         gameObject.SetActive(false);
@@ -190,6 +206,7 @@ public class CoffeeController : MonoBehaviour
 
     public void Stole(Transform newTarget)
     {
+        GetComponent<BoxCollider>().enabled = false;
         playerController.RemoveCoffeeFromList(gameObject, this);
         StartCoroutine(CloseObject(2f));
         StartCoroutine(Stole_Coroutine(newTarget));   

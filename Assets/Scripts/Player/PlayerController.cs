@@ -67,17 +67,18 @@ public class PlayerController : MonoBehaviour
 
             coffeeList.Remove(coffee);                      // son index degil ise yine listeden cikariyoruz.
 
-            for (int i = index; i < coffeeList.Count; i++)  // Sonrasinda bu indexten baslayip sonraki indexteki bardaklara ulasiyoruz ve bardaklarin targetlerini kendilerinden bir önceki bardak yapiyoruz.
-            {
+           // for (int i = index; i < coffeeList.Count; i++)  // Sonrasinda bu indexten baslayip sonraki indexteki bardaklara ulasiyoruz ve bardaklarin targetlerini kendilerinden bir önceki bardak yapiyoruz.
+           // {
                 if (index != 0)                             
                 {
-                    coffeeController.SetFollower(coffeeList[index - 1].transform);
+                    coffeeList[index].GetComponent<CoffeeController>().SetFollower(coffeeList[index - 1].transform);
+                    //coffeeController.SetFollower(coffeeList[index - 1].transform);
                 }
                 else
                 {
                     coffeeController.SetFollower(coffeeHolderTransform);
                 }
-            }
+          //  }
         }
 
     }
