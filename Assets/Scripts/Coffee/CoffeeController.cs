@@ -18,6 +18,7 @@ public class CoffeeController : MonoBehaviour
     private PlayerController playerController;
     private int index;
     [SerializeField] private float speed = 8f;
+    [SerializeField] private Material milkyCoffeeMaterial;
     private float lerpFactor = 0.1f;
     private float followDistanceZ = 0.15f;
     private bool isFollowing = false;
@@ -56,43 +57,6 @@ public class CoffeeController : MonoBehaviour
                     transform.position = new Vector3(lerpedPositionX, transform.position.y, target.transform.position.z);
                 }
 
-            }
-        }
-    }
-
-    public void FollowPlayer2()
-    {
-        if (isFollowing)
-        {
-            if (target != null)
-            {
-                Vector3 targetPosition = new Vector3(target.position.x, transform.position.y, target.position.z + index);
-                float xPos = Mathf.MoveTowards(transform.position.x, playerController.transform.position.x, speed * Time.deltaTime * 0.1f * playerController.CoffeeCount() / index);
-                //transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
-                transform.position = new Vector3(xPos, transform.position.y, playerController.transform.position.z + index * followDistanceZ);
-            }
-        }
-    }
-
-    public void FollowPlayer3()
-    {
-        if (isFollowing)
-        {
-            if (target != null)
-            {
-                float targetPositionX;
-                if (Mathf.Abs(target.position.x - transform.position.x) >= 0.01f)
-                {
-                    targetPositionX = (target.position.x - transform.position.x) * Time.deltaTime * speed * (playerController.CoffeeCount() / (index));
-                }
-                else
-                {
-                    targetPositionX = 0;
-                }
-
-                float targetPositionZ = target.position.z + followDistanceZ;
-                transform.position += new Vector3(targetPositionX, 0, 0);
-                transform.position = new Vector3(transform.position.x, transform.position.y, targetPositionZ);
             }
         }
     }
@@ -140,6 +104,17 @@ public class CoffeeController : MonoBehaviour
             score += sleve_money;
         }
         hasSleeve = true;
+    }
+
+    public void CoffeeMilking()
+    {
+        if (activeCupIndex == 0)
+        {
+            if (hasCoffee)
+            {
+                cupList[activeCupIndex].GetComponent<CoffeeState>().CoffeeRenderer().material = milkyCoffeeMaterial;
+            }
+        }
     }
 
     public void Upgrade()
@@ -198,7 +173,6 @@ public class CoffeeController : MonoBehaviour
 
     public void Sell()
     {
-
         int scoreFactor = (activeCupIndex + 1) * (hasLid ? 2 : 1) * (hasSleeve ? 2 : 1);
         ScoreManager.Instance.AddScore(scoreFactor);
         gameObject.SetActive(false);
@@ -209,7 +183,7 @@ public class CoffeeController : MonoBehaviour
         GetComponent<BoxCollider>().enabled = false;
         playerController.RemoveCoffeeFromList(gameObject, this);
         StartCoroutine(CloseObject(2f));
-        StartCoroutine(Stole_Coroutine(newTarget));   
+        StartCoroutine(Stole_Coroutine(newTarget));
     }
 
     private IEnumerator Stole_Coroutine(Transform newTarget)
@@ -229,6 +203,12 @@ public class CoffeeController : MonoBehaviour
     private IEnumerator CloseObject(float time)
     {
         yield return new WaitForSecondsRealtime(time);
+        gameObject.SetActive(false);
+    }
+
+    public void Destroy()
+    {
+        playerController.RemoveCoffeeFromList(gameObject,this);
         gameObject.SetActive(false);
     }
 

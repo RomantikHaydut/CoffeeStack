@@ -30,4 +30,9 @@ public class CoffeeState : MonoBehaviour
         }
     }
 
+    public MeshRenderer CoffeeRenderer()
+    {
+        return coffee.GetComponent<MeshRenderer>();
+    }
+
 }

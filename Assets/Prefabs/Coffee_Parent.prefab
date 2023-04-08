@@ -59,6 +59,7 @@ MonoBehaviour:
   - {fileID: 2032348924867194809}
   - {fileID: 6400947798699582048}
   speed: 8
+  milkyCoffeeMaterial: {fileID: 2100000, guid: 991253ca20db6334b8cd2dcb65b48e3b, type: 2}
 --- !u!54 &3115247412040826623
 Rigidbody:
   m_ObjectHideFlags: 0

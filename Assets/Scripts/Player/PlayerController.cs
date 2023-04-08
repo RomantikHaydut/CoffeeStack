@@ -57,7 +57,6 @@ public class PlayerController : MonoBehaviour
     {
         if (coffeeList.Contains(coffee))                     // eger kahve listemizde varsa.
         {
-            StartCoroutine(PopupAllCoffees());               // tum kahvelerin animasyonlarini aciyoruz.
             int index = coffeeList.IndexOf(coffee);          // indexini aliyoruz.
             if (index == coffeeList.Count - 1)               // eger indeximiz son bardak ise 
             {
@@ -67,18 +66,16 @@ public class PlayerController : MonoBehaviour
 
             coffeeList.Remove(coffee);                      // son index degil ise yine listeden cikariyoruz.
 
-           // for (int i = index; i < coffeeList.Count; i++)  // Sonrasinda bu indexten baslayip sonraki indexteki bardaklara ulasiyoruz ve bardaklarin targetlerini kendilerinden bir önceki bardak yapiyoruz.
-           // {
-                if (index != 0)                             
-                {
-                    coffeeList[index].GetComponent<CoffeeController>().SetFollower(coffeeList[index - 1].transform);
-                    //coffeeController.SetFollower(coffeeList[index - 1].transform);
-                }
-                else
-                {
-                    coffeeController.SetFollower(coffeeHolderTransform);
-                }
-          //  }
+            if (index != 0)
+            {
+                coffeeList[index].GetComponent<CoffeeController>().SetFollower(coffeeList[index - 1].transform);
+            }
+            else
+            {
+                coffeeController.SetFollower(coffeeHolderTransform);
+            }
+
+            StartCoroutine(PopupAllCoffees());               // tum kahvelerin animasyonlarini aciyoruz.
         }
 
     }
@@ -87,8 +84,11 @@ public class PlayerController : MonoBehaviour
     {
         for (int i = coffeeList.Count - 1; i >= 0; i--)
         {
-            coffeeList[i].gameObject.GetComponent<CoffeeController>().Popup();
-            yield return new WaitForSecondsRealtime(0.1f);
+            if (coffeeList.Count > i)
+            {
+                coffeeList[i].gameObject.GetComponent<CoffeeController>().Popup();
+                yield return new WaitForSecondsRealtime(0.1f);
+            }
         }
     }
 
