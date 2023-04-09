@@ -1,14 +1,9 @@
 fileFormatVersion: 2
-guid: 554fb6f8428eadb4fa0ceba0d1f11f6e
+guid: 6467fbb78b67df1438818150dc0b3940
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: "4.S\xFCsl\xFC Bardak Pembenew"
-    second: {fileID: 2800000, guid: dece9eb1a4047b948852d1a3b9b3cbf9, type: 3}
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0

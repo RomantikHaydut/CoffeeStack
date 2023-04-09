@@ -1,14 +1,9 @@
 fileFormatVersion: 2
-guid: 6bf44f94d8194394da70e8f865ae92f6
+guid: 5c83ef83e8de743449fed88d127432d9
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: Kahverengi bardak
-    second: {fileID: 2800000, guid: 63c8b11bd5a7a8946ba81d1e5433fd2b, type: 3}
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0
