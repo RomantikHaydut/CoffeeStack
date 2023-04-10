@@ -20,11 +20,11 @@ public class CoffeeController : MonoBehaviour
     private int index;
     [SerializeField] private float speed = 8f;
     [SerializeField] private Material milkyCoffeeMaterial;
-    private float lerpFactor = 0.1f;
     private float followDistanceZ = 0.15f;
     private bool isFollowing = false;
     private bool isGrounded = true;
     private bool isSold = false;
+    private bool isFlying = false;  
     private Animator animator;
     private Rigidbody rigidbody;
     private int score = 0;
@@ -48,17 +48,19 @@ public class CoffeeController : MonoBehaviour
         {
             if (target != null)
             {
-                int coffeeCount = playerController.CoffeeCount();
-                float lerpedPositionX = Mathf.Lerp(transform.position.x, target.position.x, (1f / index));
-                if (index != 1)
+                if (!isFlying)
                 {
-                    transform.position = new Vector3(lerpedPositionX, transform.position.y, target.transform.position.z + followDistanceZ);
+                    int coffeeCount = playerController.CoffeeCount();
+                    float lerpedPositionX = Mathf.Lerp(transform.position.x, target.position.x, (1f / index));
+                    if (index != 1)
+                    {
+                        transform.position = new Vector3(lerpedPositionX, transform.position.y, target.transform.position.z + followDistanceZ);
+                    }
+                    else
+                    {
+                        transform.position = new Vector3(lerpedPositionX, transform.position.y, target.transform.position.z);
+                    }
                 }
-                else
-                {
-                    transform.position = new Vector3(lerpedPositionX, transform.position.y, target.transform.position.z);
-                }
-
             }
         }
     }
@@ -217,22 +219,21 @@ public class CoffeeController : MonoBehaviour
 
     public void GoToTable(Transform target)
     {
-        if (!isSold)
+        if (!isFlying)
         {
-            isSold = true;
-            isFollowing = false;
+            isFlying = true;
             rigidbody.isKinematic = true;
             playerController.RemoveCoffeeFromList(gameObject, this);
             Vector3 dir = target.position - transform.position;
             dir.y = 0;
             Vector3 halfPoint = transform.position + (dir / 2);
-            halfPoint.y += 0.2f;
-            transform.transform.DOMove(halfPoint, 1f).OnComplete(() =>
+            halfPoint.y += 0.9f;
+            transform.transform.DOMove(halfPoint, 0.5f).OnComplete(() =>
             {
-                transform.transform.DOMove(target.position, 1f);   
+                transform.transform.DOMove(target.position, 0.5f);   
             });
+            print(target.name + "bbbbbbbbb");
         }
-
     }
 
 

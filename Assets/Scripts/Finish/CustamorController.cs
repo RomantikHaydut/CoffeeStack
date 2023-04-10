@@ -22,6 +22,11 @@ public class CustamorController : MonoBehaviour
                 PickCoffee(coffeeController.gameObject);
                 isPicked = true;
             }
+            else if (other.gameObject.CompareTag("Player"))
+            {
+                animator.SetBool("Picked", true);
+                isPicked = true;
+            }
         }
 
     }

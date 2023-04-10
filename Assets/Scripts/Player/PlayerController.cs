@@ -17,7 +17,9 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private Transform coffeeHolderTransform;
 
-    private bool isLevelFinished = false;
+    private bool isMoneyAreaCame = false;
+
+    private bool isFinishAreaCame = false;
 
     private bool isGameFinished=false;
 
@@ -32,15 +34,24 @@ public class PlayerController : MonoBehaviour
     {
         if (!isGameFinished)
         {
-            if (!isLevelFinished)
+            if (!isMoneyAreaCame)
             {
-                MovementForward();
+                if (!isFinishAreaCame)
+                {
+                    MovementForward();
 
-                MovementHorizontal();
+                    MovementHorizontal();
 
-                MovementCoffees();
+                    MovementCoffees();
+                }
+                else
+                {
+                    MovementForward();
+
+                    MovementCoffees();
+                }
             }
-            else if (isLevelFinished)
+            else if (isMoneyAreaCame)
             {
                 transform.position += Vector3.up * speedUpward * Time.deltaTime;
             }
@@ -127,11 +138,40 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void FinishGame()
+    public void MoneyArea()
     {
-        isLevelFinished = true;
+        isMoneyAreaCame = true;
         money = ScoreManager.Instance.GetScore() / 5;
         StartCoroutine(FinishRotate_Coroutine());
+    }
+
+    public void FinishArea()
+    {
+        if (!isFinishAreaCame)
+        {
+            isFinishAreaCame = true;
+            StartCoroutine(FinishArea_Coroutine());
+        }
+    }
+
+    private IEnumerator FinishArea_Coroutine()
+    {
+        float startPositionX = transform.position.x;
+        float timer = 0;
+        float speed = 1;
+        while(true)
+        {
+            yield return new WaitForFixedUpdate();
+            timer+= Time.deltaTime * speed;
+            if (timer >= 1)
+            {
+                transform.position = new Vector3(0, transform.position.y, transform.position.z);
+                yield break;
+            }
+            float lerpedPositionX = Mathf.Lerp(startPositionX, 0, timer);
+            transform.position = new Vector3(lerpedPositionX, transform.position.y, transform.position.z);
+
+        }
     }
 
     private IEnumerator FinishRotate_Coroutine()
