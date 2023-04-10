@@ -23,6 +23,7 @@ public class CoffeeController : MonoBehaviour
     private float followDistanceZ = 0.15f;
     private bool isFollowing = false;
     private bool isGrounded = true;
+    private bool isSold = false;
     private Animator animator;
     private Rigidbody rigidbody;
     private int score = 0;
@@ -174,7 +175,9 @@ public class CoffeeController : MonoBehaviour
     public void Sell()
     {
         ScoreManager.Instance.AddScore(score);
-        gameObject.SetActive(false);
+        playerController.RemoveCoffeeFromList(gameObject, this);
+        rigidbody.isKinematic = true;
+        isSold = true;
     }
 
     public void Stole(Transform newTarget)
@@ -217,8 +220,12 @@ public class CoffeeController : MonoBehaviour
         {
             if (!isFollowing)
             {
-                playerController.AddCoffeeToList(gameObject, this);
-                isFollowing = true;
+                if (!isSold)
+                {
+                    playerController.AddCoffeeToList(gameObject, this);
+                    isFollowing = true;
+                }
+
             }
         }
     }
@@ -229,14 +236,18 @@ public class CoffeeController : MonoBehaviour
         {
             if (collision.gameObject.CompareTag("Coffee"))
             {
-                if (!isFollowing) // Bu kahve takip etmiyor ise.
+                if (!isSold)
                 {
-                    if (collision.gameObject.GetComponent<CoffeeController>().IsFollowing())
+                    if (!isFollowing) // Bu kahve takip etmiyor ise.
                     {
-                        playerController.AddCoffeeToList(gameObject, this);
-                        isFollowing = true;
+                        if (collision.gameObject.GetComponent<CoffeeController>().IsFollowing())
+                        {
+                            playerController.AddCoffeeToList(gameObject, this);
+                            isFollowing = true;
+                        }
                     }
                 }
+
             }
         }
         else

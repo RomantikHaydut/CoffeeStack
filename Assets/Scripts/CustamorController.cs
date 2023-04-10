@@ -4,11 +4,32 @@ using UnityEngine;
 
 public class CustamorController : MonoBehaviour
 {
+    [SerializeField] private Transform coffeeHolderTransform;
+    private Animator animator;
+    private bool isPicked = false;
+
+    private void Awake()
+    {
+        animator = GetComponent<Animator>();
+    }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.TryGetComponent(out CoffeeController coffeeController))
+        if (!isPicked)
         {
-            coffeeController.Sell();
+            if (other.gameObject.TryGetComponent(out CoffeeController coffeeController))
+            {
+                coffeeController.Sell();
+                PickCoffee(coffeeController.gameObject);
+                isPicked = true;
+            }
         }
+
+    }
+
+    private void PickCoffee(GameObject coffee)
+    {
+        animator.SetBool("Picked", true);
+        coffee.transform.parent = coffeeHolderTransform;
+        coffee.transform.localPosition = Vector3.zero;
     }
 }
