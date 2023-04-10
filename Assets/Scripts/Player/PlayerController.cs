@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using Cinemachine;
 
 public class PlayerController : MonoBehaviour
 {
@@ -24,6 +25,10 @@ public class PlayerController : MonoBehaviour
     private bool isGameFinished=false;
 
     private int money;
+
+    [SerializeField] private CinemachineVirtualCamera virtualCamera;
+
+    private CinemachineTransposer transposer;
 
     private void Start()
     {
@@ -149,8 +154,28 @@ public class PlayerController : MonoBehaviour
     {
         if (!isFinishAreaCame)
         {
+            transposer = virtualCamera.GetCinemachineComponent<CinemachineTransposer>();
+            StartCoroutine(CameraSmoothDamp_Coroutine());
+
             isFinishAreaCame = true;
             StartCoroutine(FinishArea_Coroutine());
+        }
+    }
+
+    private IEnumerator CameraSmoothDamp_Coroutine()
+    {
+        float timer = 0;
+        while (true)
+        {
+            yield return new WaitForFixedUpdate();
+            timer += Time.deltaTime;
+            virtualCamera.LookAt = gameObject.transform;
+            if (timer >= 1)
+            {
+           
+                yield break;
+            }
+            transposer.m_FollowOffset += Vector3.up * timer * 0.75f * Time.deltaTime; // Kamera yukselisi !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         }
     }
 
