@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -210,9 +211,30 @@ public class CoffeeController : MonoBehaviour
 
     public void Destroy()
     {
-        playerController.RemoveCoffeeFromList(gameObject,this);
+        playerController.RemoveCoffeeFromList(gameObject, this);
         gameObject.SetActive(false);
     }
+
+    public void GoToTable(Transform target)
+    {
+        if (!isSold)
+        {
+            isSold = true;
+            isFollowing = false;
+            rigidbody.isKinematic = true;
+            playerController.RemoveCoffeeFromList(gameObject, this);
+            Vector3 dir = target.position - transform.position;
+            dir.y = 0;
+            Vector3 halfPoint = transform.position + (dir / 2);
+            halfPoint.y += 0.2f;
+            transform.transform.DOMove(halfPoint, 1f).OnComplete(() =>
+            {
+                transform.transform.DOMove(target.position, 1f);   
+            });
+        }
+
+    }
+
 
     private void OnTriggerEnter(Collider other)
     {
@@ -227,6 +249,11 @@ public class CoffeeController : MonoBehaviour
                 }
 
             }
+        }
+
+        if (other.gameObject.CompareTag("Finish"))
+        {
+            GoToTable(other.gameObject.transform);
         }
     }
 
@@ -247,7 +274,6 @@ public class CoffeeController : MonoBehaviour
                         }
                     }
                 }
-
             }
         }
         else
