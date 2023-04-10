@@ -146,7 +146,7 @@ public class PlayerController : MonoBehaviour
     public void MoneyArea()
     {
         isMoneyAreaCame = true;
-        money = ScoreManager.Instance.GetScore() / 5;
+        money = ScoreManager.Instance.GetScore();
         StartCoroutine(FinishRotate_Coroutine());
     }
 
@@ -251,10 +251,10 @@ public class PlayerController : MonoBehaviour
         {
             other.gameObject.transform.GetChild(0).gameObject.SetActive(true); 
             money -= 5;
-            //if (money <= 0)
-            //{
-            //    isGameFinished = true;
-            //}
+            if (money <= 0)
+            {
+                isGameFinished = true;
+            }
         }
     }
 }
