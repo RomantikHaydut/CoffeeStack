@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using TMPro;
 using Cinemachine;
 
 public class PlayerController : MonoBehaviour
@@ -14,6 +15,8 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private float swipeSpeed = 8f;
 
+    [SerializeField] private float coffeeMoneyValue = 0;
+
     [SerializeField] private List<GameObject> coffeeList;
 
     [SerializeField] private Transform coffeeHolderTransform;
@@ -25,6 +28,8 @@ public class PlayerController : MonoBehaviour
     private bool isGameFinished=false;
 
     private int money;
+
+    [SerializeField] private TMP_Text moneyText;
 
     [SerializeField] private CinemachineVirtualCamera virtualCamera;
 
@@ -160,6 +165,12 @@ public class PlayerController : MonoBehaviour
             isFinishAreaCame = true;
             StartCoroutine(FinishArea_Coroutine());
         }
+    }
+
+    public void AddMoney(int money)
+    {
+        coffeeMoneyValue += money;
+        moneyText.text = coffeeMoneyValue.ToString();
     }
 
     private IEnumerator CameraSmoothDamp_Coroutine()

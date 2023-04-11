@@ -28,7 +28,5 @@ public class TableArea : MonoBehaviour
         {
             plateIndex = 0;
         }
-
-        print(plateIndex + "asdasdas");
     }
 }

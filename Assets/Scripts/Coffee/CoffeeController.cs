@@ -28,10 +28,10 @@ public class CoffeeController : MonoBehaviour
     private Animator animator;
     private Rigidbody rigidbody;
     private int score = 0;
-    private int coffee_money = 5;
-    private int lid_money = 10;
-    private int sleve_money = 15;
-    private int upgrade_money = 20;
+    private int coffee_money = 1;
+    private int lid_money = 5;
+    private int sleve_money = 10;
+    private int upgrade_money = 15;
 
 
     private void Awake()
@@ -85,6 +85,7 @@ public class CoffeeController : MonoBehaviour
         if (!hasCoffee)
         {
             score += coffee_money;
+            playerController.AddMoney(coffee_money);
         }
         hasCoffee = true;
     }
@@ -96,6 +97,7 @@ public class CoffeeController : MonoBehaviour
         if (!hasLid)
         {
             score += lid_money;
+            playerController.AddMoney(lid_money);
         }
         hasLid = true;
     }
@@ -106,6 +108,7 @@ public class CoffeeController : MonoBehaviour
         if (!hasSleeve)
         {
             score += sleve_money;
+            playerController.AddMoney(sleve_money);
         }
         hasSleeve = true;
     }
@@ -139,6 +142,7 @@ public class CoffeeController : MonoBehaviour
                 CoffeeSleeving();
             }
             score += upgrade_money;
+            playerController.AddMoney(upgrade_money);
             Popup();
         }
     }
@@ -228,11 +232,13 @@ public class CoffeeController : MonoBehaviour
             dir.y = 0;
             Vector3 halfPoint = transform.position + (dir / 2);
             halfPoint.y += 0.9f;
-            transform.transform.DOMove(halfPoint, 0.5f).OnComplete(() =>
+            transform.DOMove(halfPoint, 0.5f).OnComplete(() =>
             {
-                transform.transform.DOMove(target.position, 0.5f);   
+                transform.DOMove(target.position, 0.5f).OnComplete(() =>
+                {
+                    Sell();
+                }); 
             });
-            print(target.name + "bbbbbbbbb");
         }
     }
 

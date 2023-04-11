@@ -3,7 +3,32 @@ guid: a74293bda94f6894eb83b922222dbefc
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Big Cake Base Coloruv
+    second: {fileID: 2800000, guid: 09c10d4c513097740b5c8973ba090246, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Cake Base Coloruv
+    second: {fileID: 2800000, guid: 0e513260e164fb9499db21ead216197b, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Kruvasan Base Color uv
+    second: {fileID: 2800000, guid: 6d3f0b522c66ee34b88d9c9cfdccfaee, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Mini cupcake Base Coloruv
+    second: {fileID: 2800000, guid: fd98d0cedb4c2094b90ccea721310f9a, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Pasta Base Color uv
+    second: {fileID: 2800000, guid: 306fe3d337af1d944a2e8dd910b685e2, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0
