@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,27 +11,38 @@ public class CoffeeController : MonoBehaviour
     [SerializeField] private float zFactor = 10f;
     [Header("Transforms")]
     [SerializeField] private Transform target;
-    [SerializeField] private GameObject cup;
-    [SerializeField] private GameObject coffee;
-    [SerializeField] private GameObject lid;
-    [SerializeField] private GameObject sleeve;
+    [SerializeField] private List<GameObject> cupList;
+    private int activeCupIndex = 0;
+    private bool hasLid = false;
+    private bool hasSleeve = false;
+    private bool hasCoffee = false;
     private PlayerController playerController;
     private int index;
     [SerializeField] private float speed = 8f;
-    private float lerpFactor = 0.1f;
+    [SerializeField] private Material milkyCoffeeMaterial;
     private float followDistanceZ = 0.15f;
     private bool isFollowing = false;
     private bool isGrounded = true;
+    private bool isSold = false;
+    private bool isFlying = false;  
     private Animator animator;
     private Rigidbody rigidbody;
+    private int score = 0;
+    private int coffee_money = 1;
+    private int lid_money = 5;
+    private int sleve_money = 10;
+    private int upgrade_money = 15;
+    private SettingUI settingUI;
 
 
     private void Awake()
     {
+        settingUI = FindObjectOfType<SettingUI>();
         playerController = FindObjectOfType<PlayerController>();
         animator = GetComponent<Animator>();
         rigidbody = GetComponent<Rigidbody>();
     }
+
 
     public void FollowPlayer()
     {
@@ -38,48 +50,25 @@ public class CoffeeController : MonoBehaviour
         {
             if (target != null)
             {
-                int coffeeCount = playerController.CoffeeCount();
-                float lerpedPositionX = Mathf.Lerp(transform.position.x, target.position.x, (1f / index));
-                transform.position = new Vector3(lerpedPositionX, transform.position.y, playerController.transform.position.z + followDistanceZ * index);
+                if (!isFlying)
+                {
+                    int coffeeCount = playerController.CoffeeCount();
+                    float lerpedPositionX = Mathf.Lerp(transform.position.x, target.position.x, (1f / index));
+                    if (index != 1)
+                    {
+                        transform.position = new Vector3(lerpedPositionX, transform.position.y, target.transform.position.z + followDistanceZ);
+                    }
+                    else
+                    {
+                        transform.position = new Vector3(lerpedPositionX, transform.position.y, target.transform.position.z);
+                    }
+                }
             }
         }
     }
-
-    public void FollowPlayer2()
+    public int GetScore()
     {
-        if (isFollowing)
-        {
-            if (target != null)
-            {
-                Vector3 targetPosition = new Vector3(target.position.x, transform.position.y, target.position.z + index);
-                float xPos = Mathf.MoveTowards(transform.position.x, playerController.transform.position.x, speed * Time.deltaTime * 0.1f * playerController.CoffeeCount() / index);
-                //transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
-                transform.position = new Vector3(xPos, transform.position.y, playerController.transform.position.z + index * followDistanceZ);
-            }
-        }
-    }
-
-    public void FollowPlayer3()
-    {
-        if (isFollowing)
-        {
-            if (target != null)
-            {
-                float targetPositionX;
-                if (Mathf.Abs(target.position.x - transform.position.x) >= 0.01f)
-                {
-                    targetPositionX = (target.position.x - transform.position.x) * Time.deltaTime * speed * (playerController.CoffeeCount() / (index));
-                }
-                else
-                {
-                    targetPositionX = 0;
-                }
-
-                float targetPositionZ = target.position.z + followDistanceZ;
-                transform.position += new Vector3(targetPositionX, 0, 0);
-                transform.position = new Vector3(transform.position.x, transform.position.y, targetPositionZ);
-            }
-        }
+        return score;
     }
 
     public void SetFollower(Transform target)
@@ -94,17 +83,82 @@ public class CoffeeController : MonoBehaviour
 
     public void CoffeeFilling()
     {
-        coffee.SetActive(true);
-    }
-    public void CoffeeLidding()
-    {
-        lid.SetActive(true);
-    }
-    public void CoffeeSleeving()
-    {
-        sleeve.SetActive(true);
+        cupList[activeCupIndex].GetComponent<CoffeeState>().CoffeeFilling();
+        if (!hasCoffee)
+        {
+            score += coffee_money;
+            playerController.AddMoney(coffee_money);
+            SoundManager.Instance.PlayCoffeeFillSound();
+            settingUI.Vibrate();
+        }
+        hasCoffee = true;
     }
 
+    public void CoffeeLidding()
+    {
+        cupList[activeCupIndex].GetComponent<CoffeeState>().CoffeeLidding();
+        if (!hasLid)
+        {
+            score += lid_money;
+            playerController.AddMoney(lid_money);
+            settingUI.Vibrate();
+        }
+        hasLid = true;
+    }
+
+    public void CoffeeSleeving()
+    {
+        cupList[activeCupIndex].GetComponent<CoffeeState>().CoffeeSleeving();
+        if (!hasSleeve)
+        {
+            score += sleve_money;
+            playerController.AddMoney(sleve_money);
+            SoundManager.Instance.PlayDoorSoundSound();
+            settingUI.Vibrate();
+        }
+        hasSleeve = true;
+    }
+
+    public void CoffeeMilking()
+    {
+        if (activeCupIndex == 0)
+        {
+            if (hasCoffee)
+            {
+                cupList[activeCupIndex].GetComponent<CoffeeState>().CoffeeRenderer().material = milkyCoffeeMaterial;
+                SoundManager.Instance.PlayCoffeeFillSound();
+            }
+        }
+    }
+
+    public void Upgrade()
+    {
+        if (activeCupIndex + 1 < cupList.Count)
+        {
+            cupList[activeCupIndex].SetActive(false);
+            activeCupIndex++;
+            cupList[activeCupIndex].SetActive(true);
+
+            if (hasLid)
+            {
+                CoffeeLidding();
+            }
+
+            if (hasSleeve)
+            {
+                CoffeeSleeving();
+            }
+            score += upgrade_money;
+            playerController.AddMoney(upgrade_money);
+            Popup();
+            settingUI.Vibrate();
+            SoundManager.Instance.PlayUpgradeSoundSound();
+        }
+    }
+    public void Down()
+    {
+        animator.SetTrigger("Down");
+    }
     public void Popup()
     {
         animator.SetTrigger("Popup");
@@ -115,6 +169,10 @@ public class CoffeeController : MonoBehaviour
         animator.ResetTrigger("Popup");
     }
 
+    private void CloseDown()
+    {
+        animator.ResetTrigger("Down");
+    }
     public void Jump()
     {
         isGrounded = false;
@@ -130,15 +188,91 @@ public class CoffeeController : MonoBehaviour
         return isFollowing;
     }
 
+    public void Sell()
+    {
+        SoundManager.Instance.PlayDoorSoundSound();
+        ScoreManager.Instance.AddScore(score);
+        playerController.RemoveCoffeeFromList(gameObject, this);
+        rigidbody.isKinematic = true;
+        GetComponent<Collider>().enabled = false;
+        isSold = true;
+    }
+
+    public void Stole(Transform newTarget)
+    {
+        GetComponent<BoxCollider>().enabled = false;
+        playerController.RemoveCoffeeFromList(gameObject, this);
+        StartCoroutine(CloseObject(2f));
+        StartCoroutine(Stole_Coroutine(newTarget));
+    }
+
+    private IEnumerator Stole_Coroutine(Transform newTarget)
+    {
+        rigidbody.isKinematic = true;
+        transform.position = new Vector3(transform.position.x, transform.position.y, newTarget.position.z);
+        Vector3 dir = (newTarget.position - transform.position).normalized;
+        float moveSpeed = 1f;
+        this.enabled = false;
+        while (true)
+        {
+            yield return null;
+            transform.position += dir * Time.deltaTime * moveSpeed;
+        }
+    }
+
+    private IEnumerator CloseObject(float time)
+    {
+        yield return new WaitForSecondsRealtime(time);
+        gameObject.SetActive(false);
+    }
+
+    public void Destroy()
+    {
+        playerController.RemoveCoffeeFromList(gameObject, this);
+        gameObject.SetActive(false);
+    }
+
+    public void GoToTable(Transform target)
+    {
+        if (!isFlying)
+        {
+            isFlying = true;
+            rigidbody.isKinematic = true;
+            playerController.RemoveCoffeeFromList(gameObject, this);
+            Vector3 dir = target.position - transform.position;
+            dir.y = 0;
+            Vector3 halfPoint = transform.position + (dir / 2);
+            halfPoint.y += 0.9f;
+            transform.DOMove(halfPoint, 0.5f).OnComplete(() =>
+            {
+                transform.DOMove(target.position, 0.5f).OnComplete(() =>
+                {
+                    Sell();
+                }); 
+            });
+        }
+    }
+
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
         {
             if (!isFollowing)
             {
-                playerController.AddCoffeeToList(gameObject, this);
-                isFollowing = true;
+                if (!isSold)
+                {
+                    playerController.AddCoffeeToList(gameObject, this);
+                    settingUI.Vibrate();
+                    isFollowing = true;
+                }
+
             }
+        }
+
+        if (other.gameObject.CompareTag("Finish"))
+        {
+            GoToTable(other.gameObject.transform);
         }
     }
 
@@ -148,12 +282,16 @@ public class CoffeeController : MonoBehaviour
         {
             if (collision.gameObject.CompareTag("Coffee"))
             {
-                if (!isFollowing) // Bu kahve takip etmiyor ise.
+                if (!isSold)
                 {
-                    if (collision.gameObject.GetComponent<CoffeeController>().IsFollowing())
+                    if (!isFollowing) // Bu kahve takip etmiyor ise.
                     {
-                        playerController.AddCoffeeToList(gameObject, this);
-                        isFollowing = true;
+                        if (collision.gameObject.GetComponent<CoffeeController>().IsFollowing())
+                        {
+                            playerController.AddCoffeeToList(gameObject, this);
+                            settingUI.Vibrate();
+                            isFollowing = true;
+                        }
                     }
                 }
             }
