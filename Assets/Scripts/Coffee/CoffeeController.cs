@@ -32,10 +32,12 @@ public class CoffeeController : MonoBehaviour
     private int lid_money = 5;
     private int sleve_money = 10;
     private int upgrade_money = 15;
+    private SettingUI settingUI;
 
 
     private void Awake()
     {
+        settingUI = FindObjectOfType<SettingUI>();
         playerController = FindObjectOfType<PlayerController>();
         animator = GetComponent<Animator>();
         rigidbody = GetComponent<Rigidbody>();
@@ -86,18 +88,20 @@ public class CoffeeController : MonoBehaviour
         {
             score += coffee_money;
             playerController.AddMoney(coffee_money);
+            SoundManager.Instance.PlayCoffeeFillSound();
+            settingUI.Vibrate();
         }
         hasCoffee = true;
     }
 
     public void CoffeeLidding()
     {
-
         cupList[activeCupIndex].GetComponent<CoffeeState>().CoffeeLidding();
         if (!hasLid)
         {
             score += lid_money;
             playerController.AddMoney(lid_money);
+            settingUI.Vibrate();
         }
         hasLid = true;
     }
@@ -109,6 +113,8 @@ public class CoffeeController : MonoBehaviour
         {
             score += sleve_money;
             playerController.AddMoney(sleve_money);
+            SoundManager.Instance.PlayDoorSoundSound();
+            settingUI.Vibrate();
         }
         hasSleeve = true;
     }
@@ -120,6 +126,7 @@ public class CoffeeController : MonoBehaviour
             if (hasCoffee)
             {
                 cupList[activeCupIndex].GetComponent<CoffeeState>().CoffeeRenderer().material = milkyCoffeeMaterial;
+                SoundManager.Instance.PlayCoffeeFillSound();
             }
         }
     }
@@ -144,6 +151,8 @@ public class CoffeeController : MonoBehaviour
             score += upgrade_money;
             playerController.AddMoney(upgrade_money);
             Popup();
+            settingUI.Vibrate();
+            SoundManager.Instance.PlayUpgradeSoundSound();
         }
     }
     public void Down()
@@ -181,9 +190,11 @@ public class CoffeeController : MonoBehaviour
 
     public void Sell()
     {
+        SoundManager.Instance.PlayDoorSoundSound();
         ScoreManager.Instance.AddScore(score);
         playerController.RemoveCoffeeFromList(gameObject, this);
         rigidbody.isKinematic = true;
+        GetComponent<Collider>().enabled = false;
         isSold = true;
     }
 
@@ -252,6 +263,7 @@ public class CoffeeController : MonoBehaviour
                 if (!isSold)
                 {
                     playerController.AddCoffeeToList(gameObject, this);
+                    settingUI.Vibrate();
                     isFollowing = true;
                 }
 
@@ -277,6 +289,7 @@ public class CoffeeController : MonoBehaviour
                         if (collision.gameObject.GetComponent<CoffeeController>().IsFollowing())
                         {
                             playerController.AddCoffeeToList(gameObject, this);
+                            settingUI.Vibrate();
                             isFollowing = true;
                         }
                     }

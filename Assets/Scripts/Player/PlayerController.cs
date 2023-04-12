@@ -106,6 +106,7 @@ public class PlayerController : MonoBehaviour
         }
 
         StartCoroutine(PopupAllCoffees());
+        SoundManager.Instance.PlayCollectSoundSound();
     }
 
     public void RemoveCoffeeFromList(GameObject coffee, in CoffeeController coffeeController)
@@ -262,10 +263,9 @@ public class PlayerController : MonoBehaviour
                 Vector3 hitPoint = hit.point;
                 hitPoint.y = transform.position.y;
                 hitPoint.z = transform.position.z;
-
+                hitPoint.x = Mathf.Clamp(hitPoint.x , -bound,bound);
                 transform.position = Vector3.MoveTowards(transform.position, hitPoint, Time.deltaTime * swipeSpeed);
 
-                transform.position = new Vector3(Mathf.Clamp(transform.position.x, -bound, bound), transform.position.y, transform.position.z);
             }
         }
 

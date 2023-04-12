@@ -6,12 +6,13 @@ using UnityEngine.UI;
 
 public class SettingUI : MonoBehaviour
 {
-    [SerializeField] private Button soundButton;
-    [SerializeField] private Button vibrationButton;
+    [SerializeField] private Button soundOnButton;
+    [SerializeField] private Button soundOffButton;
+    [SerializeField] private Button vibrationOnButton;
+    [SerializeField] private Button vibrationOffButton;
     [SerializeField] private Button closeButton;
 
-    private bool isSoundOn = true;
-    private bool isVibrationOn = true;
+    private bool canVibrate = true;
 
     private void Start()
     {
@@ -21,16 +22,32 @@ public class SettingUI : MonoBehaviour
             Time.timeScale = 1.0f;
         });
 
-        soundButton.onClick.AddListener(() =>
+        soundOnButton.onClick.AddListener(() =>
         {
-            ToggleSound();
-            ChangeButtonColorAndText(soundButton, isSoundOn);
+            soundOffButton.gameObject.SetActive(true);
+            soundOnButton.gameObject.SetActive(false);
+            SoundManager.Instance.SoundOff();
+        }); 
+
+        soundOffButton.onClick.AddListener(() =>
+        {
+            soundOffButton.gameObject.SetActive(false);
+            soundOnButton.gameObject.SetActive(true);
+            SoundManager.Instance.SoundOn();
         });
 
-        vibrationButton.onClick.AddListener(() =>
+        vibrationOnButton.onClick.AddListener(() =>
         {
-            ToggleSound();
-            ChangeButtonColorAndText(vibrationButton, isSoundOn);
+            vibrationOffButton.gameObject.SetActive(true);
+            vibrationOnButton.gameObject.SetActive(false);
+            canVibrate = false;
+        });
+
+        vibrationOffButton.onClick.AddListener(() =>
+        {
+            vibrationOffButton.gameObject.SetActive(false);
+            vibrationOnButton.gameObject.SetActive(true);
+            canVibrate = true;
         });
 
         closeButton.onClick.AddListener(() =>
@@ -41,54 +58,12 @@ public class SettingUI : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    private void ToggleSound()
+    public void Vibrate()
     {
-        isSoundOn = !isSoundOn;
-        if (isSoundOn)
+        if (canVibrate)
         {
-            // Sound Volume = 1
+            Handheld.Vibrate();
         }
-        else
-        {
-            // sound volume = 0;
-        }
-        print("isVibrate : " + isSoundOn);
-    }
-
-    private void ToggleVibration()
-    {
-        isVibrationOn = !isVibrationOn;
-        if (isVibrationOn)
-        {
-            // Sound Volume = 1
-        }
-        else
-        {
-            // sound volume = 0;
-        }
-        print("isVibrate : " + isVibrationOn);
-    }
-
-    private void ChangeButtonColorAndText(Button button , bool isOn)
-    {
-        TMP_Text text = button.GetComponentInChildren<TMP_Text>();
-        if (isOn)
-        {
-            ColorBlock colorBlock = button.colors;
-            colorBlock.normalColor = Color.green;
-            colorBlock.selectedColor = Color.green;
-            button.colors=colorBlock;
-            text.text = "On";
-        }
-        else
-        {
-            ColorBlock colorBlock = button.colors;
-            colorBlock.normalColor = Color.red;
-            colorBlock.selectedColor = Color.red;
-            button.colors = colorBlock;
-            text.text = "Off";
-        }
-
     }
 
 }

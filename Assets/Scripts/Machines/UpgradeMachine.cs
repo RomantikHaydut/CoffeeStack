@@ -8,11 +8,7 @@ public class UpgradeMachine : MonoBehaviour
     [SerializeField] private TMP_Text scoreText;
     [SerializeField] private GameObject canvas;
     [SerializeField] private GameObject tripleCoffee;
-    private Animator anim;
-    private void Awake()
-    {
-     //   anim = GetComponent<Animator>();
-    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.TryGetComponent(out CoffeeController coffeeController))

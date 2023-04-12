@@ -167,7 +167,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 55555
+  m_text: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1223,8 +1223,10 @@ MonoBehaviour:
   speedUpward: 0.7
   bound: 0.45
   swipeSpeed: 1.1
+  coffeeMoneyValue: 0
   coffeeList: []
   coffeeHolderTransform: {fileID: 7577188719136458899}
+  moneyText: {fileID: 1105115491}
   virtualCamera: {fileID: 0}
 --- !u!65 &5973549854927888695
 BoxCollider:
