@@ -21,10 +21,6 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private Transform coffeeHolderTransform;
 
-    [SerializeField] private GameObject playText;
-
-    [SerializeField] private GameObject finishedPanel;
-
     private bool isMoneyAreaCame = false;
 
     private bool isFinishAreaCame = false;
@@ -52,7 +48,6 @@ public class PlayerController : MonoBehaviour
             if (Input.touchCount > 0)
             {
                 isGameStarted = true;
-                playText.SetActive(false);
             }
         }
     }
@@ -285,7 +280,7 @@ public class PlayerController : MonoBehaviour
             if (money <= 0)
             {
                 isGameFinished = true;
-                finishedPanel.SetActive(true);
+                GameManager.Instance.FinishLevel();
             }
         }
     }

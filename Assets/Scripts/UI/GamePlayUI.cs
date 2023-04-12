@@ -3,15 +3,22 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GamePlayUI : MonoBehaviour
 {
     [SerializeField] private TMP_Text scoreText;
-    [SerializeField] private GameObject settingUI;
+    [SerializeField] private Button settingsButton;
+    [SerializeField] private GameObject settingsUI;
 
     private void Start()
     {
         ScoreManager.Instance.OnAddingScore += ScoreManager_OnAddingScore;
+        settingsButton.onClick.AddListener(() =>
+        {
+            settingsUI.SetActive(true);
+            Time.timeScale = 0;
+        });
     }
 
     private void ScoreManager_OnAddingScore(int obj)
@@ -22,15 +29,5 @@ public class GamePlayUI : MonoBehaviour
     private void DisplayScore(int score)
     {
         scoreText.text = score.ToString();
-    }
-
-    public void openSettings()
-    {
-        settingUI.SetActive(true);
-    }
-
-    public void nextScene()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 }

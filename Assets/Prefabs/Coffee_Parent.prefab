@@ -165,10 +165,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Coffee_Pink
       objectReference: {fileID: 0}
-    - target: {fileID: 7917659997828195858, guid: ff1aa8080f1d6b24ebd9d1e06bac0de6, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ff1aa8080f1d6b24ebd9d1e06bac0de6, type: 3}
 --- !u!1 &8455042222626333470 stripped
@@ -235,10 +231,6 @@ PrefabInstance:
     - target: {fileID: 5689834372329635906, guid: 2401c1825cf28f946906327ff3f31d46, type: 3}
       propertyPath: m_Name
       value: Coffee_Brown
-      objectReference: {fileID: 0}
-    - target: {fileID: 5689834372329635906, guid: 2401c1825cf28f946906327ff3f31d46, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2401c1825cf28f946906327ff3f31d46, type: 3}
