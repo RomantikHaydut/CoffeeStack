@@ -1221,7 +1221,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speedForward: 0.5
   speedUpward: 0.7
-  bound: 0.45
+  bound: 0.4
   swipeSpeed: 1.1
   coffeeMoneyValue: 0
   coffeeList: []

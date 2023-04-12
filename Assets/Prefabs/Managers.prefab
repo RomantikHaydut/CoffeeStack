@@ -48,6 +48,7 @@ MonoBehaviour:
   coffeeFillSound: {fileID: 8300000, guid: 2b55380cd3fcab341ae902120093b66e, type: 3}
   doorSound: {fileID: 8300000, guid: f5a27a8ed89985446973429cfc228a42, type: 3}
   collectSound: {fileID: 8300000, guid: 8b59cdef07d9fcb4cb3d6c92eda69c30, type: 3}
+  upgradeSound: {fileID: 8300000, guid: f5a27a8ed89985446973429cfc228a42, type: 3}
 --- !u!82 &34763276
 AudioSource:
   m_ObjectHideFlags: 0
