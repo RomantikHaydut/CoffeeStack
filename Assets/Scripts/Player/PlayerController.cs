@@ -21,11 +21,17 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private Transform coffeeHolderTransform;
 
+    [SerializeField] private GameObject playText;
+
+    [SerializeField] private GameObject finishedPanel;
+
     private bool isMoneyAreaCame = false;
 
     private bool isFinishAreaCame = false;
 
-    private bool isGameFinished=false;
+    private bool isGameFinished = false;
+
+    private bool isGameStarted = false;
 
     private int money;
 
@@ -39,31 +45,45 @@ public class PlayerController : MonoBehaviour
     {
         Application.targetFrameRate = 60;
     }
-
+    private void Update()
+    {
+        if (!isGameStarted)
+        {
+            if (Input.touchCount > 0)
+            {
+                isGameStarted = true;
+                playText.SetActive(false);
+            }
+        }
+    }
     private void FixedUpdate()
     {
-        if (!isGameFinished)
+        if (isGameStarted)
         {
-            if (!isMoneyAreaCame)
+
+            if (!isGameFinished)
             {
-                if (!isFinishAreaCame)
+                if (!isMoneyAreaCame)
                 {
-                    MovementForward();
+                    if (!isFinishAreaCame)
+                    {
+                        MovementForward();
 
-                    MovementHorizontal();
+                        MovementHorizontal();
 
-                    MovementCoffees();
+                        MovementCoffees();
+                    }
+                    else
+                    {
+                        MovementForward();
+
+                        MovementCoffees();
+                    }
                 }
-                else
+                else if (isMoneyAreaCame)
                 {
-                    MovementForward();
-
-                    MovementCoffees();
+                    transform.position += Vector3.up * speedUpward * Time.deltaTime;
                 }
-            }
-            else if (isMoneyAreaCame)
-            {
-                transform.position += Vector3.up * speedUpward * Time.deltaTime;
             }
         }
     }
@@ -265,6 +285,7 @@ public class PlayerController : MonoBehaviour
             if (money <= 0)
             {
                 isGameFinished = true;
+                finishedPanel.SetActive(true);
             }
         }
     }
